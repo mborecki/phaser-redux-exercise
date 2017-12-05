@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "ES6"
+    },
+    "files": [
+        "node_modules/phaser-ce/typescript/phaser.d.ts",
+        "node_modules/phaser-ce/typescript/pixi.d.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

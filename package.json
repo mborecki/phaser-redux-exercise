@@ -1,0 +1,42 @@
+{
+  "name": "phaser-typescript-starter",
+  "description": "A simple example using Phaser with TypeScript and WebPack.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/mborecki/phaser-typescript-starter",
+  "author": {
+    "name": "mborecki"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mborecki/phaser-typescript-starter.git"
+  },
+  "engines": {
+    "node": ">= 0.10.26",
+    "npm": ">=1.4.3"
+  },
+  "scripts": {
+    "test": "jest --notify --config=jest.conf.json",
+    "server": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.5",
+    "browser-sync": "^2.18.13",
+    "browser-sync-webpack-plugin": "^1.2.0",
+    "copy-webpack-plugin": "^4.2.3",
+    "jest": "^21.2.1",
+    "json-loader": "^0.5.7",
+    "ts-jest": "^21.1.4",
+    "typescript": "^2.6.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  },
+  "dependencies": {
+    "awesome-typescript-loader": "^3.3.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "expose-loader": "^0.7.3",
+    "html-webpack-plugin": "^2.30.1",
+    "phaser-ce": "^2.9.2",
+    "redux": "^3.7.2"
+  }
+}
