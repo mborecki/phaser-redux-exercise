@@ -7,6 +7,9 @@ export default class Game {
     private storage: Store<GameState>;
 
     constructor() {
+
+        window['STATE'] = this;
+
         this.storage = createStore<GameState>(reducer);
         this.storage.subscribe(() => {
             window.localStorage.gameState = JSON.stringify(this.storage.getState());

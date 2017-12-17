@@ -8,9 +8,9 @@ export class BootState extends Phaser.State {
     }
 
     preload() {
-
-        // here preload your assets!
-        this.load.image('testImage', './assets/images/test.jpg')
+        this.load.image('clearBoard', './assets/images/clear-board-flat.png');
+        this.load.image('board', './assets/images/place-board-flat.png');
+        this.load.image('pawn', './assets/images/pawn-flat.png');
     }
 
     render() {
