@@ -75,7 +75,7 @@ function getInitState(reset = false): GameState {
             { x: 4, y: 3 },
             { x: 5, y: 4 },
             { x: 4, y: 5 },
-            { x: 4, y: 6 },
+            { x: 4, y: 6 }
         ]
 
     }

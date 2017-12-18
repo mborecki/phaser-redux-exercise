@@ -46,6 +46,7 @@ export class GameState extends Phaser.State {
     create() {
         this.createMap();
         this.placePawns();
+        this.createUI();
     }
 
     createMap() {
@@ -105,6 +106,15 @@ export class GameState extends Phaser.State {
 
             this.pawns.push(pawn);
         };
+    }
+
+    createUI() {
+        let resetButton = this.add.text(10, CFG.TIME_HEIGHT * 8, 'RESET');
+        resetButton.inputEnabled = true;
+        resetButton.events.onInputDown.add(() => {
+            console.log('RESET');
+            this.gameManager.reset();
+        });
     }
 
     render() {
