@@ -1,4 +1,4 @@
-import { GameState } from "./types";
+import { GameState, GameLavelData } from "./types";
 import { Reducer, combineReducers } from "redux";
 import { MOVE, RESET } from "./actions";
 import { moveReducer } from "./reducers/move";
@@ -28,7 +28,7 @@ function getInitState(reset = false): GameState {
         }
     }
 
-    return {
+    let levelData: GameLavelData = {
         mapHeight: 9,
         mapWidth: 9,
         blockers: [
@@ -70,11 +70,27 @@ function getInitState(reset = false): GameState {
             { x: 8, y: 8 },
         ],
         pawns: [
-            { id: 0, x: 4, y: 4 },
-            { id: 1, x: 3, y: 4 },
-            { id: 2, x: 4, y: 3 },
-            { id: 3, x: 5, y: 4 },
-            { id: 4, x: 4, y: 5 },
+            { x: 4, y: 4 },
+            { x: 3, y: 4 },
+            { x: 4, y: 3 },
+            { x: 5, y: 4 },
+            { x: 4, y: 5 },
+            { x: 4, y: 6 },
         ]
+
     }
+
+    let initState: GameState = {
+        mapHeight: levelData.mapHeight,
+        mapWidth: levelData.mapWidth,
+        blockers: levelData.blockers,
+        pawns: levelData.pawns.map(({x, y}, id) => {
+            return {
+                x, y, id
+            }
+        }),
+        startPawnsCount: levelData.pawns.length
+    }
+
+    return initState;
 }
