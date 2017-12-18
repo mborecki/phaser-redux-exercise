@@ -34,8 +34,8 @@ export default class Game {
 
 
     isWin(): boolean {
-        //TODO
-        return false;
+        return this.getState().pawns.length === 1
+        // return false;
     }
 
     isLost(): boolean {

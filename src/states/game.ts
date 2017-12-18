@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BoardTile } from '../sprites/board-tile';
 
 export class GameState extends Phaser.State {
+    winText: Phaser.Text;
     selectedPawnID = new BehaviorSubject<number>(null);
     gameManager: GameManager;
     pawns: Pawn[] = [];
@@ -114,6 +115,9 @@ export class GameState extends Phaser.State {
         resetButton.events.onInputDown.add(() => {
             console.log('RESET');
             this.gameManager.reset();
+            if (this.winText) {
+                this.winText.destroy();
+            }
         });
     }
 
@@ -123,7 +127,7 @@ export class GameState extends Phaser.State {
 
 
     showWinScreen() {
-        throw new Error("Method not implemented.");
+        this.winText = this.add.text(CFG.TIME_HEIGHT * 8, CFG.TIME_HEIGHT * 8, 'WIN!')
     }
 
     showLostScreen() {
