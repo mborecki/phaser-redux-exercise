@@ -10,26 +10,31 @@ Base template: [phaser-typescript-starter](https://github.com/mborecki/phaser-ty
 
 [Demo Page](http://mborecki.pl/games/solitaire/)
 
-## Setup
+## Libs
+
+TBA
+
+## Tools
+
+TBA
+
+
+## Project Code Info
+
+### Setup
 
 ```sh
 npm install
 ```
 
-## Developing
+### Developing
 
 ```sh
 npm run server
 ```
 
-## Build
+### Build
 
 ```sh
 npm run build
-```
-
-## Test
-
-```sh
-npm run test
 ```
