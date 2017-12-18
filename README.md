@@ -1,13 +1,10 @@
-# Phaser skeleton w/ TypeScript and WebPack
+# Solitaire - Phaser + Redux + RxJS exercise project
 
-##About
+## About
 
-A simple example using Phaser with TypeScript and WebPack. Based on [heathkit/phaser-typescript-webpack-starter](https://github.com/mgiambalvo/phaser-typescript-webpack-starter)
+Simple [Solitaire](https://en.wikipedia.org/wiki/Peg_solitaire) game make to test Phaser + Redux + RxJS stack.
 
-## Added
-
-* Phaser 2.9.1
-* Testing: jest + ts-jest
+Base template: [phaser-typescript-starter](https://github.com/mborecki/phaser-typescript-starter)
 
 ## Setup
 
