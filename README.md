@@ -6,6 +6,10 @@ Simple [Solitaire](https://en.wikipedia.org/wiki/Peg_solitaire) game make to tes
 
 Base template: [phaser-typescript-starter](https://github.com/mborecki/phaser-typescript-starter)
 
+## Demo page
+
+[Demo Page](http://mborecki.pl/games/solitaire/)
+
 ## Setup
 
 ```sh
