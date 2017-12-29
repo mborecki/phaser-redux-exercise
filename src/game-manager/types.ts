@@ -8,6 +8,12 @@ export type GameState = {
     readonly startPawnsCount : number
 }
 
+export type GameStateWithHistory = {
+    past: GameState[],
+    present: GameState,
+    future: GameState[]
+}
+
 export type GameLavelData = {
     readonly mapWidth: number,
     readonly mapHeight: number,

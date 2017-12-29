@@ -1,16 +1,16 @@
 import { createStore, Store } from 'redux';
-import { GameState } from './types';
+import { GameStateWithHistory, GameState } from './types';
 import { reducer } from './reducer';
 import { actionCreators } from './actions';
 
 export default class Game {
-    private storage: Store<GameState>;
+    private storage: Store<GameStateWithHistory>;
 
     constructor() {
 
         window['STATE'] = this;
 
-        this.storage = createStore<GameState>(reducer);
+        this.storage = createStore<GameStateWithHistory>(reducer);
         this.storage.subscribe(() => {
             window.localStorage.gameState = JSON.stringify(this.storage.getState());
         });
@@ -28,10 +28,17 @@ export default class Game {
         this.storage.dispatch(actionCreators.reset());
     }
 
-    public getState() {
-        return this.storage.getState();
+    public undo() {
+        this.storage.dispatch(actionCreators.undo());
     }
 
+    public reundo() {
+        this.storage.dispatch(actionCreators.reundo());
+    }
+
+    public getState() : GameState {
+        return this.storage.getState().present;
+    }
 
     isWin(): boolean {
         return this.getState().pawns.length === 1

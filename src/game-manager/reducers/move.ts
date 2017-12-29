@@ -1,28 +1,32 @@
 import { Reducer } from "redux";
-import { GameState } from "../types";
+import { GameStateWithHistory, GameState } from "../types";
 import { Actions, MOVE } from "../actions";
+import cloneState from "../clone-state";
 
-export const moveReducer: Reducer<GameState> = (state: GameState, action: Actions[typeof MOVE]) => {
+export const moveReducer: Reducer<GameStateWithHistory> = (state: GameStateWithHistory, action: Actions[typeof MOVE]) => {
 
-    validateAction(state, action);
+    validateAction(state.present, action);
 
-    let newState = cloneState(state);
+    let newState: GameStateWithHistory = cloneState(state);
 
-    let pawn = newState.pawns.find(p => {
+    newState.past.push(state.present);
+    newState.future = [];
+
+    let pawn = newState.present.pawns.find(p => {
         return p.id === action.pawnId;
     });
 
     let x = (pawn.x + action.targetX) / 2;
     let y = (pawn.y + action.targetY) / 2;
 
-    let pawnToKill = newState.pawns.find(p => {return p.x === x && p.y === y});
+    let pawnToKill = newState.present.pawns.find(p => {return p.x === x && p.y === y});
 
     pawn.x = action.targetX;
     pawn.y = action.targetY;
 
 
-    let index = newState.pawns.indexOf(pawnToKill);
-    newState.pawns.splice(index, 1);
+    let index = newState.present.pawns.indexOf(pawnToKill);
+    newState.present.pawns.splice(index, 1);
 
     return newState;
 }
@@ -98,6 +102,3 @@ function isTargetEmpty(state: GameState, action: Actions[typeof MOVE]): boolean 
     return !isBlockerOnTarget && !isPawnOnTarget;
 }
 
-function cloneState(state: GameState): GameState {
-    return JSON.parse(JSON.stringify(state));
-}

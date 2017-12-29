@@ -1,5 +1,7 @@
 export const MOVE = 'MOVE';
 export const RESET = 'RESET';
+export const UNDO = 'UNDO';
+export const REUNDO = 'REUNDO';
 
 export type Actions = {
   MOVE: {
@@ -9,7 +11,13 @@ export type Actions = {
     targetY: number
   },
   RESET: {
-      type: typeof RESET
+    type: typeof RESET
+  },
+  UNDO: {
+    type: typeof UNDO
+  },
+  REUNDO: {
+    type: typeof REUNDO
   }
 };
 
@@ -21,7 +29,13 @@ export const actionCreators = {
     targetX,
     targetY
   }),
-  reset: () : Actions[typeof RESET] => ({
-      type: RESET
+  reset: (): Actions[typeof RESET] => ({
+    type: RESET
+  }),
+  undo: (): Actions[typeof UNDO] => ({
+    type: UNDO
+  }),
+  reundo: (): Actions[typeof REUNDO] => ({
+    type: REUNDO
   })
 };

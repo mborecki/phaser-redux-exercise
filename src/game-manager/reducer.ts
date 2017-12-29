@@ -1,11 +1,13 @@
-import { GameState, GameLavelData } from "./types";
+import { GameState, GameLavelData, GameStateWithHistory } from "./types";
 import { Reducer, combineReducers } from "redux";
-import { MOVE, RESET } from "./actions";
+import { MOVE, RESET, UNDO, REUNDO } from "./actions";
 import { moveReducer } from "./reducers/move";
 import Levels, { LevelsNames } from './levels';
+import { undoReducer } from "./reducers/undo";
+import { reundoReducer } from "./reducers/reundo";
 
 
-export const reducer: Reducer<GameState> = (state: GameState = getInitState(), action) => {
+export const reducer: Reducer<GameStateWithHistory> = (state: GameStateWithHistory = getInitState(), action) => {
 
     switch (action.type) {
         case MOVE:
@@ -14,12 +16,18 @@ export const reducer: Reducer<GameState> = (state: GameState = getInitState(), a
         case RESET:
             return getInitState(true);
 
+        case UNDO:
+            return undoReducer(state, action);
+
+        case REUNDO:
+            return reundoReducer(state, action);
+
         default:
             return state;
     }
 }
 
-function getInitState(reset = false): GameState {
+function getInitState(reset = false): GameStateWithHistory {
 
     if (!reset && window.localStorage.gameState) {
         try {
@@ -30,14 +38,15 @@ function getInitState(reset = false): GameState {
     }
 
     let levelData: GameLavelData = Levels.find(l => {
-        return l.name === LevelsNames.MODERN;
+        // return l.name === LevelsNames.MODERN;
+        return l.name === LevelsNames.CROSS;
     }).data;
 
     let initState: GameState = {
         mapHeight: levelData.mapHeight,
         mapWidth: levelData.mapWidth,
         blockers: levelData.blockers,
-        pawns: levelData.pawns.map(({x, y}, id) => {
+        pawns: levelData.pawns.map(({ x, y }, id) => {
             return {
                 x, y, id
             }
@@ -45,5 +54,9 @@ function getInitState(reset = false): GameState {
         startPawnsCount: levelData.pawns.length
     }
 
-    return initState;
+    return {
+        past: [],
+        present: initState,
+        future: []
+    };
 }

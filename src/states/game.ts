@@ -16,6 +16,9 @@ export class GameState extends Phaser.State {
 
         this.gameManager.subscribe(() => {
             let state = this.gameManager.getState();
+
+            console.log('subscribe', state);
+
             if (this.gameManager.isWin()) {
                 this.showWinScreen();
             }
@@ -24,13 +27,10 @@ export class GameState extends Phaser.State {
                 this.showLostScreen();
             }
 
-            console.log(this.gameManager.getState());
-
             this.pawns.forEach(pawn => {
                 let pState = state.pawns.find(p => { return p.id === pawn.id });
 
                 if (pState) {
-                    console.log(pState.id, '->', pState.x, pState.y);
                     pawn.moveTo(pState.x, pState.y);
                     pawn.live = true;
                 } else {
@@ -113,8 +113,25 @@ export class GameState extends Phaser.State {
         let resetButton = this.add.text(10, CFG.TIME_HEIGHT * 8, 'RESET');
         resetButton.inputEnabled = true;
         resetButton.events.onInputDown.add(() => {
-            console.log('RESET');
             this.gameManager.reset();
+            if (this.winText) {
+                this.winText.destroy();
+            }
+        });
+
+        let undoButton = this.add.text(10, CFG.TIME_HEIGHT * 7, 'UNDO');
+        undoButton.inputEnabled = true;
+        undoButton.events.onInputDown.add(() => {
+            this.gameManager.undo();
+            if (this.winText) {
+                this.winText.destroy();
+            }
+        });
+
+        let reundoButton = this.add.text(10, CFG.TIME_HEIGHT * 6, 'REUNDO');
+        reundoButton.inputEnabled = true;
+        reundoButton.events.onInputDown.add(() => {
+            this.gameManager.reundo();
             if (this.winText) {
                 this.winText.destroy();
             }
