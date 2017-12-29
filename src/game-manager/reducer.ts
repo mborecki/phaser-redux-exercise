@@ -42,8 +42,8 @@ function getInitState(reset = false): GameStateWithHistory {
     }
 
     let levelData: GameLavelData = Levels.find(l => {
-        // return l.name === LevelsNames.MODERN;
-        return l.name === LevelsNames.CROSS;
+        return l.name === LevelsNames.MODERN;
+        // return l.name === LevelsNames.CROSS;
     }).data;
 
     let initState: GameState = {

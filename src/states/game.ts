@@ -28,14 +28,12 @@ export class GameState extends Phaser.State {
         this.createUI();
 
         this.gameManager.hasPastStates.subscribe((value) => {
-            console.log('past', value)
             if (this.undoButton) {
                 this.undoButton.visible = value;
             }
         });
 
         this.gameManager.hasFutureStates.subscribe((value) => {
-            console.log('future', value)
             if (this.reundoButton) {
                 this.reundoButton.visible = value;
             }
@@ -57,34 +55,24 @@ export class GameState extends Phaser.State {
 
             for (let i = 0; i < state.mapWidth; i++) {
                 for (let j = 0; j < state.mapHeight; j++) {
-                    if (id === null) {
-                        let tile = this.boardTiles.find(bt => {
-                            return bt.tileX === i && bt.tileY === j;
-                        });
+                    let tile = this.boardTiles.find(bt => {
+                        return bt.tileX === i && bt.tileY === j;
+                    });
 
-                        if (!tile) continue;
-
-                        tile.setAvailableMove(false);
-                    } else if (this.gameManager.hasPawnLegalMoves(id)) {
-                        let tile = this.boardTiles.find(bt => {
-                            return bt.tileX === i && bt.tileY === j;
-                        });
-
-                        console.log(i, j, tile);
-
-                        if (!tile) continue;
-
-                        try {
-                            console.log(i, j);
-                            if (this.gameManager.isMoveLegal(id, i, j)) {
-                                tile.setAvailableMove(true);
-                            } else {
+                    if (tile) {
+                        if (this.gameManager.hasPawnLegalMoves(id)) {
+                            try {
+                                if (this.gameManager.isMoveLegal(id, i, j)) {
+                                    tile.setAvailableMove(true);
+                                } else {
+                                    tile.setAvailableMove(false);
+                                }
+                            } catch (e) {
                                 tile.setAvailableMove(false);
                             }
-                        } catch (e) {
+                        } else {
                             tile.setAvailableMove(false);
                         }
-
                     }
                 }
             }
@@ -201,8 +189,6 @@ export class GameState extends Phaser.State {
 
     private updateGUI() {
         let state = this.gameManager.getState();
-
-        console.log('subscribe', state);
 
         if (this.gameManager.isWin()) {
             this.showWinScreen();
