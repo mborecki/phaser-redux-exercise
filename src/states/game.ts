@@ -5,11 +5,12 @@ import CFG from '../config';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BoardTile } from '../sprites/board-tile';
 import { Observable } from 'rxjs/Observable';
+import { Button } from '../sprites/button';
 
 export class GameState extends Phaser.State {
-    undoButton: Phaser.Text;
-    reundoButton: Phaser.Text;
-    resetButton: Phaser.Text;
+    undoButton: Button;
+    reundoButton: Button;
+    resetButton: Button;
 
     winText: Phaser.Text;
 
@@ -146,8 +147,7 @@ export class GameState extends Phaser.State {
     }
 
     createUI() {
-        this.resetButton = this.add.text(10, CFG.TIME_HEIGHT * 8, 'RESET');
-        this.resetButton.inputEnabled = true;
+        this.resetButton = new Button(this.game, CFG.TIME_HEIGHT * .5, CFG.TIME_HEIGHT * 8, 'RESET')
         this.resetButton.events.onInputDown.add(() => {
             this.gameManager.reset();
             this.selectedPawnID.next(null);
@@ -155,24 +155,25 @@ export class GameState extends Phaser.State {
                 this.winText.destroy();
             }
         });
+        this.add.existing(this.resetButton);
 
-        this.undoButton = this.add.text(10, CFG.TIME_HEIGHT * 7, 'UNDO');
-        this.undoButton.inputEnabled = true;
+        this.undoButton = new Button(this.game,CFG.TIME_HEIGHT * .5, CFG.TIME_HEIGHT * 7.5, 'UNDO');
         this.undoButton.events.onInputDown.add(() => {
             this.gameManager.undo();
             if (this.winText) {
                 this.winText.destroy();
             }
         });
+        this.add.existing(this.undoButton);
 
-        this.reundoButton = this.add.text(10, CFG.TIME_HEIGHT * 6, 'REUNDO');
-        this.reundoButton.inputEnabled = true;
+        this.reundoButton = new Button(this.game,CFG.TIME_HEIGHT * .5, CFG.TIME_HEIGHT * 7, 'REUNDO')
         this.reundoButton.events.onInputDown.add(() => {
             this.gameManager.reundo();
             if (this.winText) {
                 this.winText.destroy();
             }
         });
+        this.add.existing(this.reundoButton);
     }
 
     render() {
