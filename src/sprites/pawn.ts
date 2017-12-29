@@ -17,7 +17,7 @@ export default class Pawn extends Phaser.Sprite {
         this.id = id;
 
         this.scale.x = ((CFG.TILE_WIDTH) / this.width);
-        this.scale.y = ((CFG.TIME_HEIGHT) / this.height);
+        this.scale.y = ((CFG.TILE_HEIGHT) / this.height);
 
         this.events.onInputOver.add(() => {
             if (!this.live) return;
@@ -57,7 +57,7 @@ export default class Pawn extends Phaser.Sprite {
     moveTo(x: number, y: number) {
         let tween = this.game.add.tween(this).to({
             x: (x + .5) * CFG.TILE_WIDTH - (this.width / 2),
-            y: (y + .5) * CFG.TIME_HEIGHT - (this.height / 2)
+            y: (y + .5) * CFG.TILE_HEIGHT - (this.height / 2)
         }, 300);
 
         tween.start();

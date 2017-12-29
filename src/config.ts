@@ -1,4 +1,4 @@
 export default {
     TILE_WIDTH:75,
-    TIME_HEIGHT: 75
+    TILE_HEIGHT: 75
 }

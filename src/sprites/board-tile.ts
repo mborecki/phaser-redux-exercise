@@ -11,7 +11,7 @@ export class BoardTile extends Phaser.Sprite {
     tileY: number;
 
     constructor(game: Phaser.Game, x: number, y: number) {
-        super(game, x * CFG.TILE_WIDTH, y * CFG.TIME_HEIGHT, 'board');
+        super(game, x * CFG.TILE_WIDTH, y * CFG.TILE_HEIGHT, 'board');
 
         this.tileX = x;
         this.tileY = y;
@@ -36,7 +36,7 @@ export class BoardTile extends Phaser.Sprite {
         })
     }
 
-    public setAvailableMove(value: boolean) {
+    public setAvailableMoveMark(value: boolean) {
         this.availableMove.next(value);
     }
 }
