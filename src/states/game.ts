@@ -48,7 +48,7 @@ export class GameState extends Phaser.State {
             this.resetButton.visible = past || future;
         });
 
-        this.gameManager.subscribe(() => {
+        this.gameManager.state.subscribe(() => {
             this.updateGUI();
         });
 

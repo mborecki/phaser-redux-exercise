@@ -5,6 +5,7 @@ import { moveReducer } from "./reducers/move";
 import Levels, { LevelsNames } from './levels';
 import { undoReducer } from "./reducers/undo";
 import { reundoReducer } from "./reducers/reundo";
+import { LS_GAME_STATE_KEY } from "./index";
 
 
 export const reducer: Reducer<GameStateWithHistory> = (state: GameStateWithHistory = getInitState(), action) => {
@@ -32,9 +33,9 @@ export const reducer: Reducer<GameStateWithHistory> = (state: GameStateWithHisto
 
 function getInitState(reset = false): GameStateWithHistory {
 
-    if (!reset && window.localStorage.gameState) {
+    if (!reset && window.localStorage[LS_GAME_STATE_KEY]) {
         try {
-            return JSON.parse(window.localStorage.gameState)
+            return JSON.parse(window.localStorage[LS_GAME_STATE_KEY])
         } catch (e) {
             console.error('LocalStorage parse error!')
         }

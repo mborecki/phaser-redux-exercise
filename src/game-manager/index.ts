@@ -5,11 +5,17 @@ import { actionCreators } from './actions';
 import { isMoveLegal } from './reducers/move';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+const VER = '1.0.0';
+export const LS_GAME_STATE_KEY = 'mb_solitaire-gs';
+const LS_VER_KEY = 'mb_solitaire-ver';
+
 export default class Game {
     private storage: Store<GameStateWithHistory>;
 
     public hasPastStates = new BehaviorSubject(false);
     public hasFutureStates = new BehaviorSubject(false);
+
+    public state = new BehaviorSubject(null);
 
     constructor() {
 
@@ -17,8 +23,14 @@ export default class Game {
 
         this.storage = createStore<GameStateWithHistory>(reducer);
         this.storage.subscribe(() => {
-            console.log('TUTAJ')
-            window.localStorage.gameState = JSON.stringify(this.storage.getState());
+            this.state.next(this.storage.getState());
+
+            if (VER !== window.localStorage[LS_VER_KEY]) {
+                window.localStorage[LS_VER_KEY] = VER;
+                window.localStorage.removeItem(LS_GAME_STATE_KEY);
+            }
+
+            window.localStorage[LS_GAME_STATE_KEY] = JSON.stringify(this.storage.getState());
 
             this.hasPastStates.next(!!this.storage.getState().past.length);
             this.hasFutureStates.next(!!this.storage.getState().future.length);
