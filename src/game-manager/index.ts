@@ -73,6 +73,10 @@ export default class Game {
         return false;
     }
 
+    public isMoveLegal(pawnId, x, y) {
+        return isMoveLegal(this.getState(), pawnId, x, y);
+    }
+
     isWin(): boolean {
         return this.getState().pawns.length === 1
         // return false;

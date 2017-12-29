@@ -21,6 +21,9 @@ export class BootState extends Phaser.State {
         this.load.image('pawn-selected-hover', './assets/images/pawn-selected-hover-flat_lit.png');
         this.load.image('pawn-hover', './assets/images/pawn-hover-flat_lit.png');
         this.load.image('pawn-disable', './assets/images/pawn-disable-flat_lit.png');
+
+        this.load.image('board-available', './assets/images/place-board-available-flat_lit.png');
+        this.load.image('board-available-hover', './assets/images/place-board-available-hover-flat_lit.png');
     }
 
     render() {

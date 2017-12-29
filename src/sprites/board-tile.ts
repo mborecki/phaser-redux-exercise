@@ -1,13 +1,42 @@
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import CFG from '../config';
+import { Observable } from "rxjs/Observable";
+
 export class BoardTile extends Phaser.Sprite {
+
+    availableMove = new BehaviorSubject(false);
+    hover = new BehaviorSubject(false);
+
+    tileX: number;
+    tileY: number;
+
     constructor(game: Phaser.Game, x: number, y: number) {
-        super(game, x, y, 'board');
+        super(game, x * CFG.TILE_WIDTH, y * CFG.TIME_HEIGHT, 'board');
+
+        this.tileX = x;
+        this.tileY = y;
 
         this.events.onInputOver.add(() => {
-            this.loadTexture('board-hover');
+            this.hover.next(true);
         });
 
         this.events.onInputOut.add(() => {
-            this.loadTexture('board');
+            this.hover.next(false);
         });
+
+        Observable.combineLatest(
+            this.hover,
+            this.availableMove
+        ).subscribe(([hover, available]) => {
+            if (available) {
+                this.loadTexture(hover ? 'board-available-hover' : 'board-available');
+            } else {
+                this.loadTexture(hover ? 'board-hover' : 'board');
+            }
+        })
+    }
+
+    public setAvailableMove(value: boolean) {
+        this.availableMove.next(value);
     }
 }

@@ -17,6 +17,8 @@ export class GameState extends Phaser.State {
     gameManager: GameManager;
     pawns: Pawn[] = [];
 
+    boardTiles: BoardTile[] = [];
+
     init() {
 
         this.gameManager = new GameManager();
@@ -50,6 +52,44 @@ export class GameState extends Phaser.State {
             this.updateGUI();
         });
 
+        this.selectedPawnID.subscribe(id => {
+            let state = this.gameManager.getState();
+
+            for (let i = 0; i < state.mapWidth; i++) {
+                for (let j = 0; j < state.mapHeight; j++) {
+                    if (id === null) {
+                        let tile = this.boardTiles.find(bt => {
+                            return bt.tileX === i && bt.tileY === j;
+                        });
+
+                        if (!tile) continue;
+
+                        tile.setAvailableMove(false);
+                    } else if (this.gameManager.hasPawnLegalMoves(id)) {
+                        let tile = this.boardTiles.find(bt => {
+                            return bt.tileX === i && bt.tileY === j;
+                        });
+
+                        console.log(i, j, tile);
+
+                        if (!tile) continue;
+
+                        try {
+                            console.log(i, j);
+                            if (this.gameManager.isMoveLegal(id, i, j)) {
+                                tile.setAvailableMove(true);
+                            } else {
+                                tile.setAvailableMove(false);
+                            }
+                        } catch (e) {
+                            tile.setAvailableMove(false);
+                        }
+
+                    }
+                }
+            }
+        })
+
         window['game'] = this.gameManager;
     }
     preload() { }
@@ -69,8 +109,7 @@ export class GameState extends Phaser.State {
                 })) {
                     sprite = this.add.sprite(i * CFG.TILE_WIDTH, j * CFG.TIME_HEIGHT, 'clearBoard')
                 } else {
-                    // sprite = this.add.sprite(i * CFG.TILE_WIDTH, j * CFG.TIME_HEIGHT, 'board');
-                    sprite = new BoardTile(this.game, i * CFG.TILE_WIDTH, j * CFG.TIME_HEIGHT)
+                    sprite = new BoardTile(this.game, i, j)
                     this.add.existing(sprite);
 
                     sprite.inputEnabled = true;
@@ -81,6 +120,8 @@ export class GameState extends Phaser.State {
                             this.selectedPawnID.next(null);
                         }
                     })
+
+                    this.boardTiles.push(sprite as BoardTile);
                 }
 
                 sprite.scale.y = (CFG.TIME_HEIGHT / sprite.height);
@@ -121,6 +162,7 @@ export class GameState extends Phaser.State {
         this.resetButton.inputEnabled = true;
         this.resetButton.events.onInputDown.add(() => {
             this.gameManager.reset();
+            this.selectedPawnID.next(null);
             if (this.winText) {
                 this.winText.destroy();
             }
