@@ -95,7 +95,8 @@ export default class Game {
     }
 
     isLost(): boolean {
-        //TODO
-        return false;
+        return !this.getState().pawns.find(p => {
+            return this.hasPawnLegalMoves(p.id);
+        })
     }
 }

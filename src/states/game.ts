@@ -185,7 +185,7 @@ export class GameState extends Phaser.State {
     }
 
     showLostScreen() {
-        throw new Error("Method not implemented.");
+        this.winText = this.add.text(CFG.TIME_HEIGHT * 6, CFG.TIME_HEIGHT * 6, 'No legal moves!')
     }
 
     private updateGUI() {
