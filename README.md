@@ -4,19 +4,25 @@
 
 Simple [Solitaire](https://en.wikipedia.org/wiki/Peg_solitaire) game make to test Phaser + Redux + RxJS stack.
 
-Base template: [phaser-typescript-starter](https://github.com/mborecki/phaser-typescript-starter)
-
 ## Demo page
 
 [Demo Page](http://mborecki.pl/games/solitaire/)
 
 ## Libs
 
-TBA
+Base template: [phaser-typescript-starter](https://github.com/mborecki/phaser-typescript-starter)
+
+ * [rxjs](https://github.com/reactivex/rxjs)
+ * [redux](https://github.com/reactjs/redux)
 
 ## Tools
 
-TBA
+ * [Inkscape](https://inkscape.org/en/)
+ * [SpriteIlluminator](https://www.codeandweb.com/spriteilluminator)
+
+## Extras
+
+ * [github-corners](https://github.com/tholman/github-corners)
 
 
 ## Project Code Info
@@ -27,14 +33,14 @@ TBA
 npm install
 ```
 
-### Developing
-
-```sh
-npm run server
-```
-
 ### Build
 
 ```sh
 npm run build
+```
+
+### Developing
+
+```sh
+npm run server
 ```
