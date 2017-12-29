@@ -2,6 +2,7 @@ export const MOVE = 'MOVE';
 export const RESET = 'RESET';
 export const UNDO = 'UNDO';
 export const REUNDO = 'REUNDO';
+export const INIT = 'INIT';
 
 export type Actions = {
   MOVE: {
@@ -18,6 +19,9 @@ export type Actions = {
   },
   REUNDO: {
     type: typeof REUNDO
+  },
+  INIT: {
+    type: typeof INIT
   }
 };
 
@@ -37,5 +41,8 @@ export const actionCreators = {
   }),
   reundo: (): Actions[typeof REUNDO] => ({
     type: REUNDO
+  }),
+  init: (): Actions[typeof INIT] => ({
+    type: INIT
   })
 };

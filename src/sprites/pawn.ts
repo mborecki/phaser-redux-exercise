@@ -1,13 +1,18 @@
 import CFG from '../config';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/observable/combineLatest';
 
 export default class Pawn extends Phaser.Sprite {
     id: number;
-    selected = false;
     live = false;
 
+    private hasValidMove = new BehaviorSubject(false);
+    private hover = new BehaviorSubject(false);
+    private selected = new BehaviorSubject(false);
+
     constructor(game: Phaser.Game, id: number) {
-        super(game, 0, 0, 'pawn');
+        super(game, -100, -100, 'pawn');
 
         this.id = id;
 
@@ -17,19 +22,36 @@ export default class Pawn extends Phaser.Sprite {
         this.events.onInputOver.add(() => {
             if (!this.live) return;
 
-            if (!this.selected) {
-                this.setHoverSprite();
-                this.bringToTop();
-            }
+            this.hover.next(true);
         });
 
         this.events.onInputOut.add(() => {
             if (!this.live) return;
 
-            if (!this.selected) {
-                this.setNormalSprite();
-            }
+            this.hover.next(false);
         });
+
+        Observable.combineLatest(
+            this.hasValidMove,
+            this.hover,
+            this.selected
+        ).subscribe(([valid, hover, selected]) => {
+            if (valid) {
+                if (selected) {
+                    if (hover) {
+                        this.setSelectedHoverSprite();
+                    } else {
+                        this.setSelectedSprite();
+                    }
+                } else if (hover) {
+                    this.setHoverSprite();
+                } else {
+                    this.setNormalSprite();
+                }
+            } else {
+                this.setDisableSprite();
+            }
+        })
     }
 
     moveTo(x: number, y: number) {
@@ -43,14 +65,12 @@ export default class Pawn extends Phaser.Sprite {
 
     setSelectedIdObs(selectedPawnID: Observable<number>) {
         selectedPawnID.subscribe(id => {
-            if (id === this.id) {
-                this.selected = true;
-                this.setSelectedSprite();
-            } else {
-                this.selected = false;
-                this.setNormalSprite();
-            }
+            this.selected.next(id === this.id);
         });
+    }
+
+    public setHasValidMove(state: boolean) {
+        this.hasValidMove.next(state)
     }
 
     private setHoverSprite() {
@@ -59,6 +79,14 @@ export default class Pawn extends Phaser.Sprite {
 
     private setSelectedSprite() {
         this.loadTexture('pawn-selected');
+    }
+
+    private setSelectedHoverSprite() {
+        this.loadTexture('pawn-selected-hover');
+    }
+
+    private setDisableSprite() {
+        this.loadTexture('pawn-disable');
     }
 
     private setNormalSprite() {

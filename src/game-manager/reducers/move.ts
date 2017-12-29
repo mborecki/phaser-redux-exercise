@@ -32,47 +32,48 @@ export const moveReducer: Reducer<GameStateWithHistory> = (state: GameStateWithH
 }
 
 function validateAction(state: GameState, action: Actions[typeof MOVE]) {
-    if (!isMoveInMap(state, action)) {
+    if (!isMoveLegal(state, action.pawnId, action.targetX, action.targetY)) {
+        throw "Inlegal move";
+    }
+}
+
+export function isMoveLegal(state: GameState, pawnId: number, targetX: number, targetY: number): boolean {
+
+    if (!isMoveInMap(state, targetX, targetY)) {
         throw "Move outside the map";
     }
 
-    if (!isTargetEmpty(state, action)) {
+    if (!isTargetEmpty(state, targetX, targetY)) {
         throw "Target tile is not empty";
     }
 
-    if (!isMoveLegal(state, action)) {
-        throw "Unlegal move";
-    }
-}
-
-function isMoveLegal(state: GameState, action: Actions[typeof MOVE]): boolean {
-
-    if (!isTargetCorrect(state, action)) {
+    if (!isTargetCorrect(state, pawnId, targetX, targetY)) {
         throw "Target tile is incorrect"
     }
 
-    if (!isPawnToKill(state, action)) {
+    if (!isPawnToKill(state, pawnId, targetX, targetY)) {
         throw "You must kill pawn"
     }
+
     return true;
 }
 
-function isTargetCorrect(state: GameState, action: Actions[typeof MOVE]): boolean {
-    let pawn = state.pawns.find(p => {return p.id === action.pawnId});
+function isTargetCorrect(state: GameState, pawnId: number, targetX: number, targetY: number): boolean {
+    let pawn = state.pawns.find(p => {return p.id === pawnId});
 
-    if ((pawn.x === action.targetX || pawn.y === action.targetY) &&
-        Math.abs(pawn.x - action.targetX) + Math.abs(pawn.y - action.targetY) === 2) {
+    if ((pawn.x === targetX || pawn.y === targetY) &&
+        Math.abs(pawn.x - targetX) + Math.abs(pawn.y - targetY) === 2) {
         return true;
     }
 
     return false;
 }
 
-function isPawnToKill(state: GameState, action: Actions[typeof MOVE]): boolean {
-    let pawn = state.pawns.find(p => {return p.id === action.pawnId});
+function isPawnToKill(state: GameState, pawnId: number, targetX: number, targetY: number): boolean {
+    let pawn = state.pawns.find(p => {return p.id === pawnId});
 
-    let x = (pawn.x + action.targetX) / 2;
-    let y = (pawn.y + action.targetY) / 2;
+    let x = (pawn.x + targetX) / 2;
+    let y = (pawn.y + targetY) / 2;
 
     let pawnToKill = state.pawns.find(p => {return p.x === x && p.y === y});
 
@@ -81,22 +82,22 @@ function isPawnToKill(state: GameState, action: Actions[typeof MOVE]): boolean {
 
 
 
-function isMoveInMap(state: GameState, action: Actions[typeof MOVE]): boolean {
+function isMoveInMap(state: GameState, x: number, y: number): boolean {
     return (
-        action.targetX >= 0 &&
-        action.targetX < state.mapWidth &&
-        action.targetY >= 0 &&
-        action.targetY < state.mapHeight
+        x >= 0 &&
+        x < state.mapWidth &&
+        y >= 0 &&
+        y < state.mapHeight
     )
 }
 
-function isTargetEmpty(state: GameState, action: Actions[typeof MOVE]): boolean {
+function isTargetEmpty(state: GameState, x: number, y: number): boolean {
     let isBlockerOnTarget = !!state.blockers.find(b => {
-        return b.x === action.targetX && b.y === action.targetY;
+        return b.x === x && b.y === y;
     });
 
     let isPawnOnTarget = !!state.pawns.find(p => {
-        return p.x === action.targetX && p.y === action.targetY;
+        return p.x === x && p.y === y;
     });
 
     return !isBlockerOnTarget && !isPawnOnTarget;

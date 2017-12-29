@@ -1,6 +1,6 @@
 import { GameState, GameLavelData, GameStateWithHistory } from "./types";
 import { Reducer, combineReducers } from "redux";
-import { MOVE, RESET, UNDO, REUNDO } from "./actions";
+import { MOVE, RESET, UNDO, REUNDO, INIT } from "./actions";
 import { moveReducer } from "./reducers/move";
 import Levels, { LevelsNames } from './levels';
 import { undoReducer } from "./reducers/undo";
@@ -22,8 +22,11 @@ export const reducer: Reducer<GameStateWithHistory> = (state: GameStateWithHisto
         case REUNDO:
             return reundoReducer(state, action);
 
+        case INIT:
+            return getInitState();
+
         default:
-            return state;
+            return null;
     }
 }
 
